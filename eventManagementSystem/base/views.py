@@ -1,3 +1,5 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import json
 
 name = 'Deepak'
@@ -20,12 +22,12 @@ datas = {
             "category": category,
             "image": image
         }
-    
-
-
-
 with open('events.json', 'r') as file:
     data = json.load(file)
 data['events'].append(datas)
 with open('events.json', 'w') as json_file:
     json.dump(data, json_file, indent=4)
+
+@api_view(["GET"])
+def getEvents(request):
+    return Response(data)
