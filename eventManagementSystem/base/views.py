@@ -24,9 +24,9 @@ datas = {
         }
 with open('events.json', 'r') as file:
     data = json.load(file)
-data['events'].append(datas)
-with open('events.json', 'w') as json_file:
-    json.dump(data, json_file, indent=4)
+# data['events'].append(datas)
+# with open('events.json', 'w') as json_file:
+#     json.dump(data, json_file, indent=4)
 print(data)
 
 @api_view(["GET"])
