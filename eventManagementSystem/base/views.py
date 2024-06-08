@@ -27,7 +27,18 @@ with open('events.json', 'r') as file:
 data['events'].append(datas)
 with open('events.json', 'w') as json_file:
     json.dump(data, json_file, indent=4)
+print(data)
 
 @api_view(["GET"])
 def getEvents(request):
     return Response(data)
+
+@api_view(['GET'])
+def getEvent(request,pk):
+    event = None
+    for i in data['events']:
+        if str(i["id"]) == pk:
+            event = i
+            break
+    return Response(event)
+    
