@@ -1,22 +1,17 @@
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Homescreen from './screens/Homescreen';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Routes>
+          <Route path='/' Component={Homescreen} exact/>
+        </Routes>
+      </Router>
+      
+      <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+      <script src="assets/js/bold-and-bright.js"></script>
     </div>
   );
 }
