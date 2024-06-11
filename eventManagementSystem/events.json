@@ -1,56 +1,26 @@
 {
-  "events": [
-    {
-      "id": 1,
-      "name": "Deepak",
-      "description": "This is the first sample event description.",
-      "dateTime": "2024-07-15T10:00:00",
-      "location": "Virtual",
-      "organizer": {
-        "name": "aefdds",
-        "email": "asdsdsdsdf"
-      },
-      "category": "asdf",
-      "image": "asd"
-    },
-    {
-      "id": 11,
-      "name": "Deepak",
-      "description": "This is the first sample event description.",
-      "dateTime": "2024-07-15T10:00:00",
-      "location": "Virtual",
-      "organizer": {
-        "name": "aefdds",
-        "email": "asdsdsdsdf"
-      },
-      "category": "asdf",
-      "image": "asd"
-    },
-    {
-      "id": 13,
-      "name": "Deepak",
-      "description": "This is the first sample event description.",
-      "dateTime": "2024-07-15T10:00:00",
-      "location": "Virtual",
-      "organizer": {
-        "name": "aefdds",
-        "email": "asdsdsdsdf"
-      },
-      "category": "asdf",
-      "image": "asd"
-    },
-    {
-      "id": 12,
-      "name": "Deepdsdsdak",
-      "description": "This is the first sample event description.",
-      "dateTime": "2024-07-15T10:00:00",
-      "location": "Virtual",
-      "organizer": {
-        "name": "aefdds",
-        "email": "asdsdsdsdf"
-      },
-      "category": "asdf",
-      "image": "asd"
-    }
-  ]
+    "events": [
+        {
+            "id": 5,
+            "name": "asdfas",
+            "description": "asd",
+            "date": "2024-05-31",
+            "time": "22:36",
+            "location": "asd",
+            "category": "undefined",
+            "price": "undefined",
+            "image": "./Probability and Statistics BK notes.pdf"
+        },
+        {
+            "id": 6,
+            "name": "deepak",
+            "description": "h",
+            "date": "0044-04-04",
+            "time": "04:44",
+            "location": "h",
+            "category": "h",
+            "price": "h",
+            "image": "/media/me.jpg"
+        }
+    ]
 }

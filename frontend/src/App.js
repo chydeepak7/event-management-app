@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homescreen from "./screens/Homescreen";
 import CreateEvent from "./components/CreateEvent";
+import UpdateEvent from "./components/UpdateEvent";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <Routes>
           <Route path="/" Component={Homescreen} exact />
           <Route path="/create" Component={CreateEvent} exact />
+          <Route path="/update/:id" Component={UpdateEvent} exact />
         </Routes>
       </Router>
 
