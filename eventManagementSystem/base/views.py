@@ -1,8 +1,15 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 import json
 from .forms import *
 import os
+from .serializers import *
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.hashers import make_password
+
 
 name = 'Deepak'
 description= "This is the first sample event description."
@@ -55,6 +62,7 @@ def getEvent(request,pk):
     
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def uploadImage(request):
     form = ImageUploadForm(request.POST,request.FILES)
     if form.is_valid():
@@ -79,6 +87,7 @@ def uploadImage(request):
     return 
         
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def updateEvent(request, id):
     id = int(id)  # Ensure the id is an integer
     with open('events.json', 'r') as file:
@@ -109,3 +118,49 @@ def updateEvent(request, id):
         # Write the updated events list back to the JSON file
         with open('events.json', 'w') as file:
             json.dump(data, file, indent=4)
+
+
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        serializer = UserSerializerWithToken(self.user).data
+        for k,v in serializer.items():
+            data[k] = v
+        return data
+    
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserProfile(request):
+    user = request.user
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUsers(request):
+    user= User.objects.all()
+    serializer = UserSerializer(user,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def registerUser(request):
+    try:
+        data =request.data
+        user = User.objects.create(
+            first_name = data['name'],
+            username = data['username'],
+            email = data['email'],
+            password = make_password(data['password'])
+        )
+        serializer = UserSerializerWithToken(user, many=False)
+        return Response(serializer.data)
+    except:
+        message = {'detail':'email or username already exists'}
+        return Response(message)
