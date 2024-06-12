@@ -120,8 +120,6 @@ def updateEvent(request, id):
             json.dump(data, file, indent=4)
 
 
-
-
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)

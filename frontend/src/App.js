@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homescreen from "./screens/Homescreen";
 import CreateEvent from "./components/CreateEvent";
 import UpdateEvent from "./components/UpdateEvent";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -9,8 +10,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" Component={Homescreen} exact />
-          <Route path="/create" Component={CreateEvent} exact />
-          <Route path="/update/:id" Component={UpdateEvent} exact />
+          <Route path="/create" Component={CreateEvent}  />
+          <Route path="/login" Component={Login} />
+          <Route path="/update/:id" Component={UpdateEvent} />
         </Routes>
       </Router>
 

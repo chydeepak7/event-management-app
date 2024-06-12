@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useDispatch, useSelector } from "react-redux";
+import { listEvents } from "../actions/eventAction";
 function Events() {
-  const [events, setEvents] = useState([]);
+  const dispatch = useDispatch();
+  // const selector = useSelector()
+  const eventList = useSelector((state) => state.eventList);
+  const { error, loading, events } = eventList;
   useEffect(() => {
-    async function fetchEvent() {
-      const { data } = await axios.get("/getevent/");
-      setEvents(data.events);
-    }
-    fetchEvent();
-    
-  }, []);
+    dispatch(listEvents());
+  }, [dispatch]);
+  const eventsList = events["events"];
+ 
 
-  
   return (
     <section className="py-5">
       <div className="container py-5">
@@ -20,7 +20,7 @@ function Events() {
           className="row row-cols-1 row-cols-md-2 mx-auto"
           style={{ maxWidth: "900px" }}
         >
-          {events.map((event) => {
+          {eventsList?.map((event) => {
             return (
               <div className="col mb-4" key={event["id"]}>
                 <div>
