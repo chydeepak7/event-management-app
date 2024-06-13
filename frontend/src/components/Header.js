@@ -34,9 +34,9 @@ function Header() {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="services.html">
-                Find Events
-              </a>
+              <Link className="nav-link" to="/myevent">
+                My Events
+              </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/create">

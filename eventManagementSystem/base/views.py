@@ -10,7 +10,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 
-
+email = 'Test'
 name = 'Deepak'
 description= "This is the first sample event description."
 date= "2024-07-15T10:00:00"
@@ -19,12 +19,13 @@ location= "Virtual"
 category = 'asdf'
 price = ''
 image = 'asd'
-def putData(name,description,date,time,location,category,price,image):
+def putData(email,name,description,date,time,location,category,price,image):
     with open('events.json', 'r') as file:
         data = json.load(file)
     id = data['events'][-1]["id"]
     datas = {
         "id": id+1,
+        "email": email,
             "name": name,
             "description": description,
             "date": date,
@@ -66,6 +67,8 @@ def getEvent(request,pk):
 def uploadImage(request):
     form = ImageUploadForm(request.POST,request.FILES)
     if form.is_valid():
+        email = request.user.email
+        print(request.user.username)
         name = form.cleaned_data["name"]
         description = form.cleaned_data["description"]
         price = form.cleaned_data["price"]
@@ -74,17 +77,15 @@ def uploadImage(request):
         time = form.cleaned_data["time"]
         category = form.cleaned_data["category"]
         image = request.FILES['image']
-        putData(name,description,date,time,location,category,price,image)
+        putData(email,name,description,date,time,location,category,price,image)
         with open('./' + image.name, 'wb+') as destination:
             for chunk in image.chunks():
                 destination.write(chunk)
         with open('events.json', 'r') as file:
             data = json.load(file)
-            
-        
     else:
         form = ImageUploadForm()
-    return 
+    return Response({"detail": "Invalid form data"}, status=400)
         
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
@@ -118,6 +119,41 @@ def updateEvent(request, id):
         # Write the updated events list back to the JSON file
         with open('events.json', 'w') as file:
             json.dump(data, file, indent=4)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def deleteEvent(request, id):
+    id = int(id)
+    with open('events.json', 'r') as file:
+        data = json.load(file)
+
+    # Find the event by id
+    event = next((event for event in data['events'] if event['id'] == id), None)
+
+    if event:
+        # Update the event with new data
+        event['name'] = request.data.get('name', event['name'])
+        event['description'] = request.data.get('description', event['description'])
+        event['location'] = request.data.get('location', event['location'])
+        event['price'] = request.data.get('price', event['price'])
+        event['category'] = request.data.get('category', event['category'])
+        event['date'] = request.data.get('date', event['date'])
+        event['time'] = request.data.get('time', event['time'])
+
+        # If a new image is uploaded, save it and update the image path
+        if 'image' in request.FILES:
+            image = request.FILES['image']
+            with open('./'+image.name, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+            event['image'] = './'+image.name
+
+        # Write the updated events list back to the JSON file
+        with open('events.json', 'w') as file:
+            json.dump(data, file, indent=4)
+
+
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

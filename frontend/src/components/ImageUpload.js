@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 function ImageUpload() {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState({
     name: "",
     description: "",
@@ -36,6 +40,7 @@ function ImageUpload() {
       await axios.post("/upload/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${userInfo.access}`,
         },
       });
     } catch (error) {

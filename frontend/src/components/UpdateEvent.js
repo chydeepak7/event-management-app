@@ -3,9 +3,13 @@ import axios from "axios";
 import { useParams, useHistory,useNavigate } from "react-router-dom";
 import Header from './Header';
 
+import {useSelector} from "react-redux";
+
 function UpdateEvent() {
   const { id } = useParams();
   const history = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin
   const [event, setEvent] = useState({
     id: "",
     name: "",
@@ -64,10 +68,11 @@ function UpdateEvent() {
       await axios.put(`/updateevent/${id}/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.access}`,
         },
       });
       // Redirect or inform the user about the successful update
-      history.push('/events');  // Redirect to events page or wherever appropriate
+      history('/events');  // Redirect to events page or wherever appropriate
     } catch (error) {
       console.error("Error updating event:", error);
     }
