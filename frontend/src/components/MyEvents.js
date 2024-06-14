@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "./Header";
 import {useDispatch, useSelector} from "react-redux";
 import {listEvents} from "../actions/eventAction";
+import axios from "axios"
+import {useNavigate} from "react-router-dom";
 
 const MyEvents = () => {
-    const dispatch = useDispatch();
     const userLogin = useSelector((state) => state.userLogin);
   const {userInfo} = userLogin
   // const selector = useSelector()
@@ -13,9 +14,33 @@ const MyEvents = () => {
   useEffect(() => {
     dispatch(listEvents());
   }, [dispatch]);
+const history = useNavigate()
+    const dispatch = useDispatch();
   const eventsList = events["events"];
-  const deleteHandler = (e) => {
-      e.preventDefault();
+  let setId = 0
+  const deleteHandler = async (e) => {
+      // e.preventDefault();
+      const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${userInfo.access}`,
+            },
+        };
+      await axios.delete(`/event/delete/${e}/`, config)
+      // history("/myevent")
+window.location.reload()
+
+  }
+  const updateHandler = async (e) => {
+      const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${userInfo.access}`,
+            },
+        };
+
+      history(`/update/${e}`)
+
 
   }
 
@@ -30,10 +55,11 @@ const MyEvents = () => {
                     >
                         {eventsList?.map((event) => {
                             if (event["email"] == userInfo.username ) {
+                                const id = event["id"];
                             return (
                                 <div className="col mb-4" key={event["id"]}>
                                     <div>
-                                        <a href="/">
+                                        <a>
                                             <img
                                                 className="rounded img-fluid shadow w-100 fit-cover"
                                                 src={event["image"]}
@@ -56,9 +82,16 @@ const MyEvents = () => {
                                     <a
                                         className="btn btn-primary shadow"
                                         role="button"
-                                        onClick={deleteHandler}
+                                        onClick={() => deleteHandler(id)}
                                     >
                                         Delete
+                                    </a>
+                                    <a
+                                        className="btn btn-primary shadow"
+                                        role="button"
+                                        onClick={() => updateHandler(id)}
+                                    >
+                                        Update
                                     </a>
                                 </div>
                             );

@@ -6,6 +6,7 @@ urlpatterns = [
     path('getevent/<str:pk>/', getEvent, name="getEvent"),
     path('upload/', uploadImage, name="uploadImage"),
     path('updateevent/<str:id>/', updateEvent, name="updateEvent"),
+    path('event/delete/<str:id>/', deleteEvent, name="deleteEvent"),
 
     path('api/users/', getUsers, name="getUsers"),
     path('api/users/profile/', getUserProfile, name="getUserProfile"),

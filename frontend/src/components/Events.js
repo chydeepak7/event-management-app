@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { listEvents } from "../actions/eventAction";
 function Events() {
   const dispatch = useDispatch();
-  // const selector = useSelector()
   const eventList = useSelector((state) => state.eventList);
   const { error, loading, events } = eventList;
   useEffect(() => {
     dispatch(listEvents());
+
   }, [dispatch]);
   const eventsList = events["events"];
  

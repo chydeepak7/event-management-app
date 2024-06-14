@@ -72,9 +72,10 @@ function UpdateEvent() {
         },
       });
       // Redirect or inform the user about the successful update
-      history('/events');  // Redirect to events page or wherever appropriate
+      history('/');  // Redirect to events page or wherever appropriate
     } catch (error) {
       console.error("Error updating event:", error);
+      history('/');  // Redirect to events page or wherever appropriate
     }
   };
 

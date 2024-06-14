@@ -1,102 +1,6 @@
 {
     "events": [
         {
-            "id": 7,
-            "userName": "Test",
-            "name": "jhj",
-            "description": "kbk",
-            "date": "2024-05-29",
-            "time": "19:36",
-            "location": "kjkh",
-            "category": "jkhk",
-            "price": "kjhkh",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 8,
-            "userName": "Test",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 9,
-            "email": "test@yahoo.com",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 10,
-            "userName": "Test",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 11,
-            "userName": "Test",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 12,
-            "userName": "Test",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 13,
-            "userName": "Test",
-            "name": "test",
-            "description": "rtsg",
-            "date": "2024-06-05",
-            "time": "21:49",
-            "location": "j",
-            "category": "hkjhkjh",
-            "price": "kjhk",
-            "image": "/media/me.jpg"
-        },
-        {
-            "id": 14,
-            "userName": "Test",
-            "name": "12",
-            "description": "kjh",
-            "date": "2024-06-22",
-            "time": "19:57",
-            "location": "kj",
-            "category": "kjh",
-            "price": "kjh",
-            "image": "/media/780311.jpg"
-        },
-        {
             "id": 15,
             "userName": "Test",
             "name": "123",
@@ -109,16 +13,40 @@
             "image": "/media/780311.jpg"
         },
         {
-            "id": 16,
+            "id": 17,
             "email": "test@yahoo.com",
-            "name": "123456",
-            "description": "dsf",
-            "date": "2024-06-07",
-            "time": "19:59",
-            "location": "jkn",
-            "category": "kjh",
-            "price": "kjk",
-            "image": "/media/780311.jpg"
+            "name": "shit",
+            "description": "lskdjf",
+            "date": "2024-06-15",
+            "time": "21:05",
+            "location": "lj",
+            "category": "kj",
+            "price": "lkj",
+            "image": "./780311.jpg"
+        },
+        {
+            "id": 18,
+            "email": "test@yahoo.com",
+            "name": "deepakisdon123",
+            "description": "lskdjf",
+            "date": "2024-06-15",
+            "time": "21:05",
+            "location": "lj",
+            "category": "kj",
+            "price": "lkj",
+            "image": "/media/me.jpg"
+        },
+        {
+            "id": 19,
+            "email": "deepak@test.com",
+            "name": "test",
+            "description": "kjl",
+            "date": "2024-05-30",
+            "time": "21:30",
+            "location": "kjl",
+            "category": "lkj",
+            "price": "jlk",
+            "image": "/media/me.jpg"
         }
     ]
 }

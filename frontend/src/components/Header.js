@@ -29,7 +29,7 @@ function Header() {
         <div className="collapse navbar-collapse" id="navcol-1">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
-              <Link className="nav-link active" to="index.html">
+              <Link className="nav-link active" to="/">
                 Home
               </Link>
             </li>
@@ -60,14 +60,14 @@ function Header() {
               <a
                 className="btn btn-primary shadow"
                 role="button"
-                href="signup.html"
+                href="/login"
               >
                 Sign in
               </a>
               <a
                 className="btn btn-primary shadow"
                 role="button"
-                href="signup.html"
+                href="/register"
                 style={{marginLeft:'20px'}}
               >
                 Sign up

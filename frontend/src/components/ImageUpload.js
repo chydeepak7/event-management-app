@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 function ImageUpload() {
+    const history = useNavigate();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
@@ -43,8 +45,11 @@ function ImageUpload() {
             Authorization: `Bearer ${userInfo.access}`,
         },
       });
+      history("/")
+        console.log('success')
     } catch (error) {
       console.error("Error uploading:", error);
+      history("/")
     }
   };
 
@@ -55,44 +60,51 @@ function ImageUpload() {
         name="name"
         placeholder="Event Name"
         onChange={handleChange}
+        required
       />
       <input
         type="text"
         name="description"
         placeholder="Description"
         onChange={handleChange}
+        required
       />
       <input
         type="text"
         name="location"
         placeholder="Location"
         onChange={handleChange}
+        required
       />
       <input
         type="text"
         name="price"
         placeholder="Price"
         onChange={handleChange}
+        required
       />
       <input
         type="text"
         name="category"
         placeholder="Category"
         onChange={handleChange}
+        required
       />
       <input
         type="date"
         name="date"
         placeholder="Date"
         onChange={handleChange}
+        required
       />
       <input
         type="time"
         name="time"
         placeholder="Time"
         onChange={handleChange}
+        required
       />
-      <input type="file" name="image" onChange={handleFileChange} />
+      <input type="file" name="image" onChange={handleFileChange} required/>
       <button type="submit">Upload</button>
     </form>
   );
