@@ -46,8 +46,10 @@ with open('events.json', 'r') as file:
 
 @api_view(["GET"])
 def getEvents(request):
+
     query = request.query_params.get("keyword", "").strip().lower()  # Get and normalize the keyword
 
+    print(query)
     with open('events.json', 'r') as file:
         data = json.load(file)
 
@@ -59,7 +61,7 @@ def getEvents(request):
         response_data = {'events': filtered_events}
     else:
         response_data = data  # Return all events if query is empty
-
+    # response_data = data
     return Response(response_data)
 @api_view(['GET'])
 def getEvent(request,pk):

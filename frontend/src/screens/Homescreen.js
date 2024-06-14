@@ -9,7 +9,7 @@ function Homescreen() {
   return (
     <div>
         <Header />
-        <SearchBox />
+
         <Events />
         {/* <ImageUpload /> */}
     </div>

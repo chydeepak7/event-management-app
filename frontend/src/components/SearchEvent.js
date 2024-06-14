@@ -1,15 +1,17 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { listEvents } from "../actions/eventAction";
-import {keyboard} from "@testing-library/user-event/dist/keyboard";
-function Events( {history}) {
+import Header from "./Header";
+import SearchBox from "./SearchBox";
+
+function SearchEvents( {history}) {
   const dispatch = useDispatch();
   const eventList = useSelector((state) => state.eventList);
   const { error, loading, events } = eventList;
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get('keyword');
-  console.log(keyword)
   useEffect(() => {
     dispatch(listEvents(keyword));
 
@@ -18,6 +20,10 @@ function Events( {history}) {
 
 
   return (
+      <div>
+          <Header />
+          <SearchBox />
+
     <section className="py-5">
       <div className="container py-5">
         <div
@@ -54,7 +60,9 @@ function Events( {history}) {
         </div>
       </div>
     </section>
+      </div>
   );
 }
 
-export default Events;
+export default SearchEvents;
+
