@@ -46,10 +46,21 @@ with open('events.json', 'r') as file:
 
 @api_view(["GET"])
 def getEvents(request):
+    query = request.query_params.get("keyword", "").strip().lower()  # Get and normalize the keyword
+
     with open('events.json', 'r') as file:
         data = json.load(file)
-    return Response(data)
 
+    if query:  # Check if query is not empty
+        filtered_events = [
+            event for event in data['events']
+            if query in event.get('name', '').lower()
+        ]
+        response_data = {'events': filtered_events}
+    else:
+        response_data = data  # Return all events if query is empty
+
+    return Response(response_data)
 @api_view(['GET'])
 def getEvent(request,pk):
     with open('events.json', 'r') as file:

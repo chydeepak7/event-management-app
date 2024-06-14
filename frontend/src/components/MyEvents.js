@@ -11,11 +11,11 @@ const MyEvents = () => {
   // const selector = useSelector()
   const eventList = useSelector((state) => state.eventList);
   const { error, loading, events } = eventList;
+    const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listEvents());
   }, [dispatch]);
 const history = useNavigate()
-    const dispatch = useDispatch();
   const eventsList = events["events"];
   let setId = 0
   const deleteHandler = async (e) => {

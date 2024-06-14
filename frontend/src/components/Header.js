@@ -41,11 +41,15 @@ function Header() {
             <li className="nav-item">
               <Link className="nav-link" to="/create">
                 Create Events
+              </Link></li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/search">
+                Search Events
               </Link>
             </li>
           </ul>
           {userInfo ? (
-            <div>{userInfo.username}
+              <div>{userInfo.username}
             <Link
                 className="btn btn-primary shadow"
                 role="button"

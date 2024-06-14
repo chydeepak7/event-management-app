@@ -7,14 +7,15 @@ function Events( {history}) {
   const dispatch = useDispatch();
   const eventList = useSelector((state) => state.eventList);
   const { error, loading, events } = eventList;
-
-
+  const searchParams = new URLSearchParams(location.search);
+  const keyword = searchParams.get('keyword');
+  console.log(keyword)
   useEffect(() => {
-    dispatch(listEvents());
+    dispatch(listEvents(keyword));
 
-  }, [dispatch]);
+  }, [dispatch, keyword]);
   const eventsList = events["events"];
- 
+
 
   return (
     <section className="py-5">

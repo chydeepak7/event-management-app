@@ -3,11 +3,13 @@ import Header from '../components/Header'
 import axios from 'axios'
 import Events from '../components/Events'
 import ImageUpload from '../components/ImageUpload'
+import SearchBox from "../components/SearchBox";
 function Homescreen() {
     
   return (
     <div>
         <Header />
+        <SearchBox />
         <Events />
         {/* <ImageUpload /> */}
     </div>

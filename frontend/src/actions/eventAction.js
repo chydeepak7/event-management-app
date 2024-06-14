@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export const listEvents = () => async (dispatch) => {
+export const listEvents = (keyword = "") => async (dispatch) => {
     try{
         dispatch({type:'EVENT_LIST_REQUEST'})
-        const { data } = await axios.get("/getevent/");
+        const { data } = await axios.get(`/getevent/?keyword=${keyword}`);
         dispatch({type:'EVENT_LIST_SUCCESS', payload:data})
         
         } catch(error) {
