@@ -12,10 +12,11 @@ function SearchEvents( {history}) {
   const { error, loading, events } = eventList;
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get('keyword');
+  const date = searchParams.get('date');
   useEffect(() => {
-    dispatch(listEvents(keyword));
+    dispatch(listEvents(keyword,date));
 
-  }, [dispatch, keyword]);
+  }, [dispatch, keyword, date]);
   const eventsList = events["events"];
 
 

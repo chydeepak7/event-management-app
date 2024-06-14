@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from datetime import datetime
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 import json
@@ -46,23 +47,36 @@ with open('events.json', 'r') as file:
 
 @api_view(["GET"])
 def getEvents(request):
-
-    query = request.query_params.get("keyword", "").strip().lower()  # Get and normalize the keyword
-
-    print(query)
+    query_keyword = request.query_params.get("keyword", "").strip().lower()
+    query_date = request.query_params.get("date", "")
+    print(query_keyword)
+    print(query_date)
     with open('events.json', 'r') as file:
         data = json.load(file)
 
-    if query:  # Check if query is not empty
-        filtered_events = [
-            event for event in data['events']
-            if query in event.get('name', '').lower()
-        ]
-        response_data = {'events': filtered_events}
-    else:
-        response_data = data  # Return all events if query is empty
-    # response_data = data
+    filtered_events = []
+
+    for event in data['events']:
+        if (not query_keyword or query_keyword in event.get('name', '').lower()) and \
+           (not query_date or query_date == event.get('date', '')):
+            filtered_events.append(event)
+
+    response_data = {'events': filtered_events}
     return Response(response_data)
+# def getEvents(request):
+#     query = request.query_params.get("keyword", "").strip().lower()
+#     print(query)
+#     with open('events.json', 'r') as file:
+#         data = json.load(file)
+#     if query:  # Check if query is not empty
+#         filtered_events = [
+#             event for event in data['events']
+#             if query in event.get('name', '').lower()
+#         ]
+#         response_data = {'events': filtered_events}
+#     else:
+#         response_data = data
+#     return Response(response_data)
 @api_view(['GET'])
 def getEvent(request,pk):
     with open('events.json', 'r') as file:
