@@ -6,6 +6,9 @@ class ImageUploadForm(forms.Form):
     location = forms.CharField(max_length=50)
     price = forms.CharField(max_length=50)
     date = forms.CharField(max_length=50)
+    endDate = forms.CharField(max_length=50)
+
     time = forms.CharField(max_length=50)
+    totalParticipants = forms.CharField(max_length=50)
     description = forms.CharField(max_length=500)
     image = forms.ImageField()

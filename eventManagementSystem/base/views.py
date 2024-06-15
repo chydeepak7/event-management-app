@@ -2,55 +2,47 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from datetime import datetime
 from rest_framework.response import Response
-from django.contrib.auth.models import User
 import json
-from .forms import *
-import os
-from .serializers import *
+from .forms import ImageUploadForm
+from .serializers import UserSerializer, UserSerializerWithToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
-email = 'Test'
-name = 'Deepak'
-description= "This is the first sample event description."
-date= "2024-07-15T10:00:00"
-time=""
-location= "Virtual"
-category = 'asdf'
-price = ''
-image = 'asd'
-def putData(email,name,description,date,time,location,category,price,image):
+def putData(email, name, description, date, endDate, time, location, category, price, totalParticipants, image):
     with open('events.json', 'r') as file:
         data = json.load(file)
     id = data['events'][-1]["id"]
     datas = {
-        "id": id+1,
+        "id": id + 1,
         "email": email,
-            "name": name,
-            "description": description,
-            "date": date,
-            "time":time,
-            "location": location,
-            
-            "category": category,
-            "price":price,
-            "image": "/media/"+image.name
-        }
+        "name": name,
+        "description": description,
+        "date": date,
+        "endDate": endDate,
+        "time": time,
+        "location": location,
+        "category": category,
+        "price": price,
+        "totalParticipants": totalParticipants,
+        "image": "/media/" + image.name
+    }
     data['events'].append(datas)
     with open('events.json', 'w') as file1:
-        json.dump(data,file1,indent=4)
-    
+        json.dump(data, file1, indent=4)
+
+
 with open('events.json', 'r') as file:
     data = json.load(file)
-
 
 @api_view(["GET"])
 def getEvents(request):
     query_keyword = request.query_params.get("keyword", "").strip().lower()
     query_date = request.query_params.get("date", "")
-    print(query_keyword)
-    print(query_date)
+    query_endDate = request.query_params.get("endDate", "")
+    query_totalParticipants = request.query_params.get("totalParticipants", "")
+
     with open('events.json', 'r') as file:
         data = json.load(file)
 
@@ -58,41 +50,25 @@ def getEvents(request):
 
     for event in data['events']:
         if (not query_keyword or query_keyword in event.get('name', '').lower()) and \
-           (not query_date or query_date == event.get('date', '')):
+           (not query_date or query_date == event.get('date', '')) and \
+           (not query_endDate or query_endDate == event.get('endDate', '')) and \
+           (not query_totalParticipants or query_totalParticipants == str(event.get('totalParticipants', ''))):
             filtered_events.append(event)
 
     response_data = {'events': filtered_events}
     return Response(response_data)
-# def getEvents(request):
-#     query = request.query_params.get("keyword", "").strip().lower()
-#     print(query)
-#     with open('events.json', 'r') as file:
-#         data = json.load(file)
-#     if query:  # Check if query is not empty
-#         filtered_events = [
-#             event for event in data['events']
-#             if query in event.get('name', '').lower()
-#         ]
-#         response_data = {'events': filtered_events}
-#     else:
-#         response_data = data
-#     return Response(response_data)
+
 @api_view(['GET'])
-def getEvent(request,pk):
+def getEvent(request, pk):
     with open('events.json', 'r') as file:
         data = json.load(file)
-    event = None
-    for i in data['events']:
-        if str(i["id"]) == pk:
-            event = i
-            break
+    event = next((i for i in data['events'] if str(i["id"]) == pk), None)
     return Response(event)
-    
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def uploadImage(request):
-    form = ImageUploadForm(request.POST,request.FILES)
+    form = ImageUploadForm(request.POST, request.FILES)
     if form.is_valid():
         email = request.user.email
         name = form.cleaned_data["name"]
@@ -100,52 +76,47 @@ def uploadImage(request):
         price = form.cleaned_data["price"]
         location = form.cleaned_data["location"]
         date = form.cleaned_data["date"]
+        endDate = form.cleaned_data["endDate"]
         time = form.cleaned_data["time"]
         category = form.cleaned_data["category"]
+        totalParticipants = form.cleaned_data["totalParticipants"]
         image = request.FILES['image']
-        putData(email,name,description,date,time,location,category,price,image)
+        putData(email, name, description, date, endDate, time, location, category, price, totalParticipants, image)
         with open('./' + image.name, 'wb+') as destination:
             for chunk in image.chunks():
                 destination.write(chunk)
         with open('events.json', 'r') as file:
             data = json.load(file)
+        return Response({"detail": "Image uploaded successfully"}, status=201)
     else:
-        form = ImageUploadForm()
-    return Response({"detail": "Invalid form data"}, status=400)
-        
+        return Response({"detail": "Invalid form data"}, status=400)
+
+
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateEvent(request, id):
-    id = int(id)  # Ensure the id is an integer
+    id = int(id)
     with open('events.json', 'r') as file:
         data = json.load(file)
-
-    # Find the event by id
     event = next((event for event in data['events'] if event['id'] == id), None)
-
     if event:
-        # Update the event with new data
         event['name'] = request.data.get('name', event['name'])
         event['description'] = request.data.get('description', event['description'])
         event['location'] = request.data.get('location', event['location'])
         event['price'] = request.data.get('price', event['price'])
         event['category'] = request.data.get('category', event['category'])
         event['date'] = request.data.get('date', event['date'])
+        event['endDate'] = request.data.get('endDate', event['endDate'])
         event['time'] = request.data.get('time', event['time'])
-
-        # If a new image is uploaded, save it and update the image path
+        event['totalParticipants'] = request.data.get('totalParticipants', event['totalParticipants'])
         if 'image' in request.FILES:
             image = request.FILES['image']
-            # image_path = os.path.join('media', image.name)
-            with open('./'+image.name, 'wb+') as destination:
+            with open('./' + image.name, 'wb+') as destination:
                 for chunk in image.chunks():
                     destination.write(chunk)
-            event['image'] = './'+image.name
-
-        # Write the updated events list back to the JSON file
+            event['image'] = './' + image.name
         with open('events.json', 'w') as file:
             json.dump(data, file, indent=4)
-
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
@@ -153,32 +124,21 @@ def deleteEvent(request, id):
     id = int(id)
     with open('events.json', 'r') as file:
         data = json.load(file)
-
-    # Find the event by id
-    event = next((event for event in data['events'] if event['id'] == id), None)
-
-    if event:
-        data['events'] = [event for event in  data['events'] if event['id'] != id]
-
-        # Write the updated events list back to the JSON file
-        with open('events.json', 'w') as file:
-            json.dump(data, file, indent=4)
+    data['events'] = [event for event in data['events'] if event['id'] != id]
+    with open('events.json', 'w') as file:
+        json.dump(data, file, indent=4)
     return Response("event deleted")
-
-
-
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         serializer = UserSerializerWithToken(self.user).data
-        for k,v in serializer.items():
+        for k, v in serializer.items():
             data[k] = v
         return data
-    
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -190,23 +150,22 @@ def getUserProfile(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getUsers(request):
-    user= User.objects.all()
-    serializer = UserSerializer(user,many=True)
+    user = User.objects.all()
+    serializer = UserSerializer(user, many=True)
     return Response(serializer.data)
-
 
 @api_view(['POST'])
 def registerUser(request):
     try:
-        data =request.data
+        data = request.data
         user = User.objects.create(
-            first_name = data['name'],
-            username = data['email'],
-            email = data['email'],
-            password = make_password(data['password'])
+            first_name=data['name'],
+            username=data['email'],
+            email=data['email'],
+            password=make_password(data['password'])
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except:
-        message = {'detail':'email or username already exists'}
+        message = {'detail': 'email or username already exists'}
         return Response(message)

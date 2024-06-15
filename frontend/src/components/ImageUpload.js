@@ -12,10 +12,12 @@ function ImageUpload() {
     name: "",
     description: "",
     date: "",
+    endDate: "",
     time: "",
     location: "",
     price: "",
     category: "",
+    totalParticipants: "",
     image: null,
   });
 
@@ -36,6 +38,8 @@ function ImageUpload() {
     formData.append("price", selectedFile.price);
     formData.append("category", selectedFile.category);
     formData.append("date", selectedFile.date);
+    formData.append("endDate", selectedFile.endDate);
+    formData.append("totalParticipants", selectedFile.totalParticipants);
     formData.append("time", selectedFile.time);
     formData.append("image", selectedFile.image);
     try {
@@ -54,59 +58,72 @@ function ImageUpload() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <input
-        type="text"
-        name="name"
-        placeholder="Event Name"
-        onChange={handleChange}
-        required
+      <form onSubmit={handleSubmit} className="form">
+          <input
+              type="text"
+              name="name"
+              placeholder="Event Name"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="text"
+              name="description"
+              placeholder="Description"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="text"
+              name="location"
+              placeholder="Location"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="text"
+              name="price"
+              placeholder="Price"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="text"
+              name="category"
+              placeholder="Category"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="date"
+              name="date"
+              placeholder="Date"
+              onChange={handleChange}
+              required
+          /><input
+          type="date"
+          name="endDate"
+          placeholder="End Date"
+          onChange={handleChange}
+          required
       />
-      <input
-        type="text"
-        name="description"
-        placeholder="Description"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="location"
-        placeholder="Location"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="price"
-        placeholder="Price"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="category"
-        placeholder="Category"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="date"
-        placeholder="Date"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="time"
-        name="time"
-        placeholder="Time"
-        onChange={handleChange}
-        required
-      />
-      <input type="file" name="image" onChange={handleFileChange} required/>
-      <button type="submit">Upload</button>
-    </form>
+          <input
+              type="time"
+              name="time"
+              placeholder="Time"
+              onChange={handleChange}
+              required
+          />
+          <input
+              type="text"
+              name="totalParticipants"
+              placeholder="Total Participants"
+              onChange={handleChange}
+              required
+          />
+          <input type="file" name="image" onChange={handleFileChange} required/>
+          <button type="submit">Upload</button>
+      </form>
   );
 }
 

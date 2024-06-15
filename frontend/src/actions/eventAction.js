@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-export const listEvents = (keyword = "", date = "") => async (dispatch) => {
+export const listEvents = (keyword = "", date = "", endDate = "", totalParticipants = "") => async (dispatch) => {
     try {
         dispatch({ type: 'EVENT_LIST_REQUEST' });
 
@@ -11,8 +11,12 @@ export const listEvents = (keyword = "", date = "") => async (dispatch) => {
             url += `keyword=${encodeURIComponent(keyword)}&`;
         }
         if (date) {
-            url += `date=${encodeURIComponent(date)}`;
+            url += `date=${encodeURIComponent(date)}&`;
         }
+        if (endDate) {
+            url += `endDate=${encodeURIComponent(endDate)}&`;
+        }
+
 
         const { data } = await axios.get(url);
         dispatch({ type: 'EVENT_LIST_SUCCESS', payload: data });
@@ -20,15 +24,3 @@ export const listEvents = (keyword = "", date = "") => async (dispatch) => {
         dispatch({ type: 'EVENT_LIST_FAIL', payload: error.message });
     }
 };
-// export const createEvents = () => async (dispatch) => {
-//     try{
-//         dispatch({type:'EVENT_CREATE_REQUEST'})
-//         const { data } = await axios.get("/getevent/");
-//         dispatch({type:'EVENT_CREATE_SUCCESS', payload:data})
-        
-//         } catch(error) {
-//         dispatch({type:'EVENT_CREATE_FAIL', payload:error.message})
-
-//     }
-
-// }
