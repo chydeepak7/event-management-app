@@ -62,7 +62,11 @@ def getEvents(request):
 def getEvent(request, pk):
     with open('events.json', 'r') as file:
         data = json.load(file)
-    event = next((i for i in data['events'] if str(i["id"]) == pk), None)
+    event = None
+    for i in data['events']:
+        if str(i["id"]) == pk:
+            event = i
+            break
     return Response(event)
 
 @api_view(["POST"])

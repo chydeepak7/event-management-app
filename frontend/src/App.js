@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import MyEvents from "./components/MyEvents";
 import SearchEvent from "./components/SearchEvent";
+import EventDetails from "./components/EventDetails";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/myevent" Component={MyEvents}  />
           <Route path="/login" Component={Login} />
           <Route path="/search" Component={SearchEvent} />
+            <Route path="/events/:id" Component={EventDetails} />
           <Route path="/register" Component={Register} />
           <Route path="/update/:id" Component={UpdateEvent} />
         </Routes>
