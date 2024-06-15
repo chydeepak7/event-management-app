@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from datetime import datetime
 from rest_framework.response import Response
+from rest_framework import status
 import json
 from .forms import ImageUploadForm
 from .serializers import UserSerializer, UserSerializerWithToken
@@ -99,29 +100,46 @@ def uploadImage(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateEvent(request, id):
-    id = int(id)
-    with open('events.json', 'r') as file:
-        data = json.load(file)
-    event = next((event for event in data['events'] if event['id'] == id), None)
-    if event:
-        event['name'] = request.data.get('name', event['name'])
-        event['description'] = request.data.get('description', event['description'])
-        event['location'] = request.data.get('location', event['location'])
-        event['price'] = request.data.get('price', event['price'])
-        event['category'] = request.data.get('category', event['category'])
-        event['date'] = request.data.get('date', event['date'])
-        event['endDate'] = request.data.get('endDate', event['endDate'])
-        event['time'] = request.data.get('time', event['time'])
-        event['totalParticipants'] = request.data.get('totalParticipants', event['totalParticipants'])
-        if 'image' in request.FILES:
-            image = request.FILES['image']
-            with open('./' + image.name, 'wb+') as destination:
-                for chunk in image.chunks():
-                    destination.write(chunk)
-            event['image'] = './' + image.name
-        with open('events.json', 'w') as file:
-            json.dump(data, file, indent=4)
+    try:
+        id = int(id)
+        with open('events.json', 'r') as file:
+            data = json.load(file)
 
+        event = next((event for event in data['events'] if event['id'] == id), None)
+
+        if event:
+            event['name'] = request.data.get('name', event['name'])
+            event['description'] = request.data.get('description', event['description'])
+            event['location'] = request.data.get('location', event['location'])
+            event['price'] = request.data.get('price', event['price'])
+            event['category'] = request.data.get('category', event['category'])
+            event['date'] = request.data.get('date', event['date'])
+            event['endDate'] = request.data.get('endDate', event.get('endDate', ''))  # Ensure 'endDate' exists
+            event['time'] = request.data.get('time', event['time'])
+            event['totalParticipants'] = request.data.get('totalParticipants', event['totalParticipants'])
+
+            if 'image' in request.FILES:
+                image = request.FILES['image']
+                with open('./media/' + image.name, 'wb+') as destination:
+                    for chunk in image.chunks():
+                        destination.write(chunk)
+                event['image'] = '/media/' + image.name
+
+            with open('events.json', 'w') as file:
+                json.dump(data, file, indent=4)
+
+            return Response(event, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    except KeyError as e:
+        return Response({"error": f"KeyError: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except FileNotFoundError as e:
+        return Response({"error": f"FileNotFoundError: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def deleteEvent(request, id):

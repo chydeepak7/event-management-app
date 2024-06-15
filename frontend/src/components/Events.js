@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { listEvents } from "../actions/eventAction";
+import { Link } from "react-router-dom";
 import {keyboard} from "@testing-library/user-event/dist/keyboard";
 function Events( {history}) {
   const dispatch = useDispatch();
@@ -27,13 +28,13 @@ function Events( {history}) {
             return (
               <div className="col mb-4" key={event["id"]}>
                 <div>
-                  <a href="/">
+                  <Link to={`/events/${event['id']}`}>
                     <img
                       className="rounded img-fluid shadow w-100 fit-cover"
                       src={event["image"]}
                       style={{ height: "250px" }}
                     />
-                  </a>
+                  </Link>
                   <div className="py-4">
                     <span className="badge bg-primary mb-2">
                       {event["category"]}

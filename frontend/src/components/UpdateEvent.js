@@ -17,7 +17,9 @@ function UpdateEvent() {
     location: "",
     price: "",
     category: "",
+    totalParticipants:"",
     date: "",
+    endDate: "",
     time: "",
     image: null,
   });
@@ -58,11 +60,13 @@ function UpdateEvent() {
     formData.append("location", event.location);
     formData.append("price", event.price);
     formData.append("category", event.category);
+    formData.append("totalParticipants", event.totalParticipants);
     formData.append("date", event.date);
+    formData.append("endDate", event.endDate);
     formData.append("time", event.time);
-    if (event.image) {
-      formData.append("image", event.image);
-    }
+    // if (event.image) {
+    //   formData.append("image", event.image);
+    // }
 
     try {
       await axios.put(`/updateevent/${id}/`, formData, {
@@ -117,11 +121,23 @@ function UpdateEvent() {
           value={event.category}
           placeholder="Category"
           onChange={handleChange}
+        /><input
+          type="text"
+          name="totalParticipants"
+          value={event.totalParticipants}
+          placeholder="Total Participants"
+          onChange={handleChange}
         />
         <input
           type="date"
           name="date"
           value={event.date}
+          placeholder="Date"
+          onChange={handleChange}
+        /><input
+          type="date"
+          name="endDate"
+          value={event.endDate}
           placeholder="Date"
           onChange={handleChange}
         />
@@ -132,7 +148,7 @@ function UpdateEvent() {
           placeholder="Time"
           onChange={handleChange}
         />
-        <input type="file" name="image" onChange={handleFileChange} />
+        {/*<input type="file" name="image" onChange={handleFileChange} />*/}
         <button type="submit">Update</button>
       </form>
     </div>

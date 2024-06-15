@@ -3,7 +3,8 @@ import Header from "./Header";
 import {useDispatch, useSelector} from "react-redux";
 import {listEvents} from "../actions/eventAction";
 import axios from "axios"
-import {useNavigate} from "react-router-dom";
+// import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const MyEvents = () => {
     const userLogin = useSelector((state) => state.userLogin);
@@ -59,13 +60,13 @@ window.location.reload()
                             return (
                                 <div className="col mb-4" key={event["id"]}>
                                     <div>
-                                        <a>
+                                        <Link to={`/events/${event['id']}`}>
                                             <img
                                                 className="rounded img-fluid shadow w-100 fit-cover"
                                                 src={event["image"]}
                                                 style={{height: "250px"}}
                                             />
-                                        </a>
+                                        </Link>
                                         <div className="py-4">
                     <span className="badge bg-primary mb-2">
                       {event["category"]}
